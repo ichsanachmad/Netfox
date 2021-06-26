@@ -4,7 +4,9 @@ import com.aster.netfox.data.model.Base
 import com.aster.netfox.data.model.Movie
 import com.aster.netfox.data.resource.Resource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 

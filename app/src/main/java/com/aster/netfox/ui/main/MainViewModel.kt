@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,13 +25,19 @@ class MainViewModel @Inject constructor(private val networkRepository: NetworkRe
 
     init {
         viewModelScope.launch {
-            networkRepository.getMovies().collect {
-                when (it) {
-                    is Resource.Loading -> _movieListUiState.emit(Resource.Loading)
-                    is Resource.Success -> _movieListUiState.emit(Resource.Success(it.data.items))
-                    is Resource.Error -> _movieListUiState.emit(Resource.Error(it.message))
+            networkRepository.getMovies()
+                .map {
+                    when (it) {
+                        is Resource.Loading -> _movieListUiState.emit(Resource.Loading)
+                        is Resource.Success -> {
+                            _movieListUiState.emit(Resource.Success(it.data.items.filter { movie ->
+                                movie.title.contains("Thor")
+                            }))
+                        }
+                        is Resource.Error -> _movieListUiState.emit(Resource.Error(it.message))
+                    }
                 }
-            }
+                .collect()
         }
     }
 }
