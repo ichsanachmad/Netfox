@@ -1,6 +1,7 @@
 package com.aster.netfox.utilities.adapter.movie
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +12,7 @@ import javax.inject.Inject
 
 class MovieAdapter @Inject constructor() : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
     private val movies = mutableListOf<Movie>()
-
+    var listener: OnItemClickListener? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = ListItemMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
@@ -37,7 +38,14 @@ class MovieAdapter @Inject constructor() : RecyclerView.Adapter<MovieAdapter.Vie
                 imgCover.load("https://image.tmdb.org/t/p/w200${movie.poster}")
                 tvTitle.text = movie.title
                 tvOverview.text = movie.overview
+                root.setOnClickListener {
+                    listener?.onItemClick(movie)
+                }
             }
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(movie: Movie)
     }
 }
