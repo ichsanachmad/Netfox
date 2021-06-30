@@ -1,6 +1,7 @@
 package com.aster.netfox.ui.detail
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import com.aster.netfox.data.model.Movie
@@ -10,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
     companion object {
+        private const val TAG = "DetailActivity"
         const val EXTRA_MOVIE = "extra_movie"
     }
     private var movie: Movie? = null
